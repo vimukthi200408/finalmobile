@@ -1,12 +1,27 @@
 import 'dart:convert';
 
 import 'package:finalmobile/homePage.dart';
+import 'package:finalmobile/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  print("comes here1");
+  await Firebase.initializeApp(
+      options: FirebaseOptions(
+        apiKey: "AIzaSyDn-ceTsk2j4ZvFKM6EOs1VgC9yLpVVo1Y",
+        appId: "1:66206032117:android:d8837fc479b48c297be5bc",
+        messagingSenderId: "66206032117",
+        projectId: "movie-app-3f126",)
+  );
+  print("comes here2");
+     //options: Firebase.initializeApp(
 
-void main() {
-  runApp(const MyApp());
+  //);
+      runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -16,11 +31,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(),
+      // title: 'Flutter Demo',
+      // theme: ThemeData(
+      //   primarySwatch: Colors.blue,
+      // ),
+       //home: const MyHomePage(),
+      home:Wrapper()
+      //Text('d'),
     );
   }
 }
