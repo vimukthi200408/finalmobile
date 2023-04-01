@@ -1,11 +1,16 @@
 import 'dart:convert';
 
 import 'package:finalmobile/homePage.dart';
+import 'package:finalmobile/services/firebaseauth.dart';
 import 'package:finalmobile/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
+import 'package:provider/provider.dart';
+
+import 'models/user.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,20 +35,30 @@ class MyApp extends StatelessWidget {
   // Root component
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // title: 'Flutter Demo',
-      // theme: ThemeData(
-      //   primarySwatch: Colors.blue,
-      // ),
-       //home: const MyHomePage(),
-      home:Wrapper()
-      //Text('d'),
+    return StreamProvider<Bser>.value(
+      value:FireBaseAuth().user,
+      initialData: Bser(uid: 'risk'),
+      catchError: (context, error) {
+        print('Erreeer: $error');
+        return Bser(uid: 'risk');
+        // or return a default value to use instead of null
+      },
+      child: MaterialApp(
+        title: 'Movie App',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+         //home: const MyHomePage(),
+        home:Wrapper(),
+      ),
     );
   }
+
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
+
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -95,11 +110,54 @@ class _MyHomePageState extends State<MyHomePage> {
                   fontFamily: 'Roboto',
                   fontWeight: FontWeight.bold
 
-              )),
+              )
+          ),
         ),
+        drawer: NavigationDrawer(),
 
         body:homePage(topRated: topRated,trendingNow: trendingNow, popular: popular,)
 
     );
   }
 }
+
+
+
+class NavigationDrawer extends StatelessWidget {
+
+
+
+  NavigationDrawer({Key? key}) : super(key: key);
+
+  final FireBaseAuth _auth = FireBaseAuth();
+
+  @override
+  Widget build(BuildContext context) => Drawer(
+    child:SingleChildScrollView(
+      child:Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children:<Widget>[
+          Container(
+            padding: EdgeInsets.only(
+              top: 20,
+            ),
+          ),
+          Column(
+            children: [
+              ListTile(
+                leading:Icon(Icons.person),
+                title:Text("logout"),
+                onTap: () async{
+                  print("1");
+                  print(await _auth.signingOut());
+                  print("2");
+                },
+              )
+            ],
+          ),
+        ],
+      ),
+    )
+  );
+}
+

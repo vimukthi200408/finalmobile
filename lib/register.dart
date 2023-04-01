@@ -3,20 +3,28 @@ import 'dart:ui';
 import 'package:finalmobile/services/firebaseauth.dart';
 import 'package:flutter/material.dart';
 
-class Signin extends StatefulWidget {
-  //Signin({Key? key}) : super(key: key);
+class Register extends StatefulWidget {
+ // const Register({Key? key}) : super(key: key);
+
+
 
   final Function switchPage;
-  Signin({required this.switchPage});
+  Register({required this.switchPage});
+
 
 
 
   @override
-  State<Signin> createState() => _SigninState();
+  State<Register> createState() => _RegisterState();
+
+
 }
 
-class _SigninState extends State<Signin> {
 
+
+
+class _RegisterState extends State<Register> {
+  @override
 
   FireBaseAuth spider = FireBaseAuth();
   final _formKey = GlobalKey<FormState>();
@@ -24,8 +32,6 @@ class _SigninState extends State<Signin> {
   String username='';
   String password= '';
 
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -33,7 +39,7 @@ class _SigninState extends State<Signin> {
           Positioned.fill(
             child: ImageFiltered(
               imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: Image.asset('assets/batman.jpg',fit: BoxFit.cover,),
+              child: Image.asset('assets/starwars.jpg',fit: BoxFit.cover,),
             ),
 
           ),
@@ -43,14 +49,14 @@ class _SigninState extends State<Signin> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text('Sign in',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white),),
+                  Text('Sign Up',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white),),
                   SizedBox(height: 15),
                   SizedBox(
                     width: 400,
                     child:TextFormField(
                       validator: (input) => input!.isEmpty ? 'Enter a email' :null,
                       onChanged: (input){
-                          setState(() => username = input);
+                        setState(() => username = input);
                       },
                       decoration: InputDecoration(
                         hintText: 'username',
@@ -84,10 +90,16 @@ class _SigninState extends State<Signin> {
                   ),
                   SizedBox(height: 15),
                   ElevatedButton(
-                    child:Text('Sign in'),
+                    child:Text(
+                      'Register',
+
+                    ),
                     onPressed: () async{
                       if (_formKey.currentState!.validate()){
-                         dynamic result = await spider.Signingin(username, password);
+                        dynamic result = await spider.Registering(username, password);
+                        if (result == null){
+                          //a error message to show when email is not entered correctly
+                        }
                         print(username);
                         print(password);
                       }
@@ -99,7 +111,7 @@ class _SigninState extends State<Signin> {
                       primary: Colors.transparent, // sets background color to transparent
                       onPrimary: Colors.black, // se
                     ),
-                    child:Text('Do not have a account ?  Register here',
+                    child:Text('Already have a account ?  Sign in here',
                       style: TextStyle(
                         color: Colors.white,
                         decoration: TextDecoration.underline, // underlines the text
@@ -110,17 +122,17 @@ class _SigninState extends State<Signin> {
                     },
                   ),
 
-
                 ],
               ),
 
 
-          ),
+            ),
 
           ),
         ],
       ),
     );
-
   }
+
+
 }

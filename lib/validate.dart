@@ -1,3 +1,4 @@
+import 'package:finalmobile/register.dart';
 import 'package:finalmobile/signin.dart';
 import 'package:flutter/material.dart';
 
@@ -9,10 +10,29 @@ class Validate extends StatefulWidget {
 }
 
 class _ValidateState extends State<Validate> {
+
+  bool register = true;
+  void switchPage(){
+    setState(() {
+      if (register) {
+        register = false;
+      } else {
+        register = true;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child:Signin(),
-    );
+
+    if (register){
+      return Register(switchPage: switchPage);
+    }else{
+      return Signin(switchPage: switchPage);
+    }
+
+    // return Container(
+    //   child:Register(),
+    // );
   }
 }
