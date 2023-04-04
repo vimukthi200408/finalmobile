@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:finalmobile/homePage.dart';
+import 'package:finalmobile/purchases.dart';
 import 'package:finalmobile/services/firebaseauth.dart';
 import 'package:finalmobile/wrapper.dart';
 import 'package:flutter/material.dart';
@@ -151,6 +152,18 @@ class NavigationDrawer extends StatelessWidget {
                   print("1");
                   print(await _auth.signingOut());
                   print("2");
+                },
+              )
+            ],
+          ),
+          Column(
+            children: [
+              ListTile(
+                leading:Icon(Icons.shopping_cart),
+                title:Text("Purchases"),
+                onTap: () {
+                  purchases Purchases = purchases();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Purchases));
                 },
               )
             ],

@@ -87,9 +87,7 @@ class _SigninState extends State<Signin> {
                     child:Text('Sign in'),
                     onPressed: () async{
                       if (_formKey.currentState!.validate()){
-                         dynamic result = await spider.Signingin(username, password);
-                        print(username);
-                        print(password);
+                         await spider.Signingin(username, password);
                       }
                     },
                   ),

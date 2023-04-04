@@ -11,7 +11,7 @@ class Validate extends StatefulWidget {
 
 class _ValidateState extends State<Validate> {
 
-  bool register = true;
+  bool register = false;
   void switchPage(){
     setState(() {
       if (register) {

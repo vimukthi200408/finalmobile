@@ -81,7 +81,8 @@ class FireBaseAuth{
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: username, password: password);
       User? user = result.user;
 
-      await Database(uid: user!.uid).updateData('0', 'new leaf member', 100);
+
+      //await Database(uid: user!.uid).updateData('0', 'new leaf member', 100);
       return userGotFromFirebase(user);
     }catch(e){
       print(e.toString());
