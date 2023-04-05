@@ -251,7 +251,6 @@ class infoPage extends StatelessWidget {
                     catchError: (context, error) {
                       print('Erreeer: $error');
                       return Bser(uid: 'risk');
-                      // or return a default value to use instead of null
                     },
                     child: Center(
                       child: SizedBox(

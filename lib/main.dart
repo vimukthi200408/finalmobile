@@ -102,7 +102,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   final FireBaseAuth _auth = FireBaseAuth();
   List<Movie> movieList = [];
-  final Database database = Database(uid: '1NTaFBuF6aba8afKEFHt9ZAWQHv2');
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,6 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         drawer: NavigationDrawer(children: [
           Container(
+
             padding: EdgeInsets.only(
               top: 20,
             ),
@@ -144,11 +146,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 leading:Icon(Icons.shopping_cart),
                 title:Text("Purchases"),
                 onTap: () async {
+                  final currentUser = context.read<Bser>().uid;
+                  print('tetris');
+                  print(currentUser);
+                  final Database database = Database(uid: currentUser);
+
                   List<Movie> newList = await database.bought.first;
                   setState(()=>movieList = newList);
                   print('gamer');
                   print(movieList[0].movieposter);
-                  purchases Purchases = purchases(details: movieList,);
+                  purchases Purchases = purchases(details: movieList);
                   Navigator.push(context, MaterialPageRoute(builder: (context) => Purchases));
 
 
@@ -179,9 +186,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
 
 
-          
-
-        ],),
+        ],
+        ),
 
         body:
         //purMovie(),
