@@ -24,11 +24,11 @@ class Database {
   //   });
   // }
 
-  Future updateData(String movieposter,String moviename,int option) async {
+  Future updateData(String movieposter,String moviename,int price) async {
     return await movielists.add({
       'movieposter':  movieposter,
       'moviename': moviename,
-      'option':option
+      'price':price
     });
   }
 
@@ -45,16 +45,14 @@ class Database {
 
   List<Movie> movielistsnap(QuerySnapshot snapshot){
     return snapshot.docs.map((doc){
-      final data = doc.data() as Map<String, dynamic>; // Cast doc.data to Map<String, dynamic>
+      final data = doc.data() as Map<String, dynamic>;
       return Movie(
         movieposter: data['movieposter'] ?? '',
         moviename: data['moviename'] ?? '',
-        option: data['option'] ?? '0',
+        price: data['price'] ?? '0',
       );
     }).toList();
   }
-
-
 
   //get stream
   Stream<List<Movie>> get bought{

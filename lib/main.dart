@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:finalmobile/homePage.dart';
+import 'package:finalmobile/purMovie.dart';
 import 'package:finalmobile/purchases.dart';
+import 'package:finalmobile/services/data.dart';
 import 'package:finalmobile/services/firebaseauth.dart';
 import 'package:finalmobile/wrapper.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 
+import 'models/Movie.dart';
 import 'models/user.dart';
 
 void main() async{
@@ -97,7 +100,9 @@ class _MyHomePageState extends State<MyHomePage> {
       popular = apiPopular['results'];
     });
   }
-
+  final FireBaseAuth _auth = FireBaseAuth();
+  List<Movie> movieList = [];
+  final Database database = Database(uid: '1NTaFBuF6aba8afKEFHt9ZAWQHv2');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,30 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
               )
           ),
         ),
-        drawer: NavigationDrawer(),
-
-        body:homePage(topRated: topRated,trendingNow: trendingNow, popular: popular,)
-
-    );
-  }
-}
-
-
-
-class NavigationDrawer extends StatelessWidget {
-
-
-
-  NavigationDrawer({Key? key}) : super(key: key);
-
-  final FireBaseAuth _auth = FireBaseAuth();
-
-  @override
-  Widget build(BuildContext context) => Drawer(
-    child:SingleChildScrollView(
-      child:Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children:<Widget>[
+        drawer: NavigationDrawer(children: [
           Container(
             padding: EdgeInsets.only(
               top: 20,
@@ -161,16 +143,188 @@ class NavigationDrawer extends StatelessWidget {
               ListTile(
                 leading:Icon(Icons.shopping_cart),
                 title:Text("Purchases"),
-                onTap: () {
-                  purchases Purchases = purchases();
+                onTap: () async {
+                  List<Movie> newList = await database.bought.first;
+                  setState(()=>movieList = newList);
+                  print('gamer');
+                  print(movieList[0].movieposter);
+                  purchases Purchases = purchases(details: movieList,);
                   Navigator.push(context, MaterialPageRoute(builder: (context) => Purchases));
+
+
+                },
+                // onTap: () {
+                //   //Navigator.push(context, MaterialPageRoute(builder: (context) => purMovie()));
+                //   //purMovie();
+                //   // final defDetails = {
+                //   //   'movieposter': 'hello',
+                //   //   'moviename': 'hello',
+                //   //   'price': 0,
+                //   // };
+                //   print('jason');
+                //   final movies = Provider.of<List<Movie>>(context);
+                //   print('bong');
+                //   print(movies[0]);
+                //
+                //
+                //
+                //   Movie movie = Movie(moviename: "The Shawshank Redemption", movieposter: "https://www.example.com/shawshank_redemption_poster.jpg", price: 10);
+                //   print(movie);
+                //   purchases Purchases = purchases(details: movies,);
+                //   //purchases Purchases = purchases(details: defDetails);
+                //   Navigator.push(context, MaterialPageRoute(builder: (context) => Purchases));
+                // },
+              )
+            ],
+          ),
+
+
+          
+
+        ],),
+
+        body:
+        //purMovie(),
+        homePage(topRated: topRated,trendingNow: trendingNow, popular: popular,)
+
+    );
+  }
+}
+
+class NavigationDrawer2 extends StatefulWidget {
+
+//  NavigationDrawer2({Key? key}) : super(key: key);
+
+  // List<Movie> movieList = [];
+  // final Database database = Database(uid: 'H2L8DAcLOvM6iX0Z8Zji1nN1gC03');
+
+
+
+  @override
+  State<NavigationDrawer2> createState() => _NavigationDrawer2State();
+}
+
+class _NavigationDrawer2State extends State<NavigationDrawer2> {
+  final FireBaseAuth _auth = FireBaseAuth();
+  List<Movie> movieList = [];
+   final Database database = Database(uid: 'H2L8DAcLOvM6iX0Z8Zji1nN1gC03');
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child:Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children:[
+          Container(
+            padding: EdgeInsets.only(
+              top: 20,
+            ),
+          ),
+          Column(
+            children: [
+              ListTile(
+                leading:Icon(Icons.person),
+                title:Text("logout"),
+                onTap: () async{
+                  print("1");
+                  print(await _auth.signingOut());
+                  print("2");
+                },
+              )
+            ],
+          ),Column(
+            children: [
+              ListTile(
+                leading:Icon(Icons.shopping_cart),
+                title:Text("Purchases"),
+                onTap: () async {
+                  List<Movie> newList = await database.bought.first;
+                  setState(()=>movieList = newList);
+
                 },
               )
             ],
           ),
+
         ],
       ),
-    )
-  );
+    );
+  }
 }
 
+
+
+
+// class NavigationDrawer extends StatelessWidget {
+//
+//   List<Movie> movieList = [];
+//   final Database database = Database(uid: 'H2L8DAcLOvM6iX0Z8Zji1nN1gC03');
+//
+//
+//   NavigationDrawer({Key? key}) : super(key: key);
+//
+//   final FireBaseAuth _auth = FireBaseAuth();
+//
+//   @override
+//   Widget build(BuildContext context) => Drawer(
+//     child:SingleChildScrollView(
+//       child:Column(
+//         crossAxisAlignment: CrossAxisAlignment.stretch,
+//         children:<Widget>[
+//           Container(
+//             padding: EdgeInsets.only(
+//               top: 20,
+//             ),
+//           ),
+//           Column(
+//             children: [
+//               ListTile(
+//                 leading:Icon(Icons.person),
+//                 title:Text("logout"),
+//                 onTap: () async{
+//                   print("1");
+//                   print(await _auth.signingOut());
+//                   print("2");
+//                 },
+//               )
+//             ],
+//           ),
+//           Column(
+//             children: [
+//               ListTile(
+//                 leading:Icon(Icons.shopping_cart),
+//                 title:Text("Purchases"),
+//                 onTap: () async {
+//                   List<Movie> newList = await database.bought.first;
+//                   setState(()=>movieList = newList);
+//
+//                 },
+//                 // onTap: () {
+//                 //   //Navigator.push(context, MaterialPageRoute(builder: (context) => purMovie()));
+//                 //   //purMovie();
+//                 //   // final defDetails = {
+//                 //   //   'movieposter': 'hello',
+//                 //   //   'moviename': 'hello',
+//                 //   //   'price': 0,
+//                 //   // };
+//                 //   print('jason');
+//                 //   final movies = Provider.of<List<Movie>>(context);
+//                 //   print('bong');
+//                 //   print(movies[0]);
+//                 //
+//                 //
+//                 //
+//                 //   Movie movie = Movie(moviename: "The Shawshank Redemption", movieposter: "https://www.example.com/shawshank_redemption_poster.jpg", price: 10);
+//                 //   print(movie);
+//                 //   purchases Purchases = purchases(details: movies,);
+//                 //   //purchases Purchases = purchases(details: defDetails);
+//                 //   Navigator.push(context, MaterialPageRoute(builder: (context) => Purchases));
+//                 // },
+//               )
+//             ],
+//           ),
+//         ],
+//       ),
+//     )
+//   );
+// }
+//
